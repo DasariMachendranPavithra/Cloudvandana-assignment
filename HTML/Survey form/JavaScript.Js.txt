@@ -1,0 +1,45 @@
+function submitForm() {
+    const form = document.getElementById('survey-form');
+    if (form.checkValidity()) {
+        const results = [];
+        const fields = ['First Name', 'Last Name', 'Date of Birth', 'Country', 'Gender', 'Profession', 'Email', 'Mobile Number'];
+
+        for (const field of fields) {
+            let value = '';
+            if (field === 'Gender') {
+                const genderInputs = document.querySelectorAll('input[name="gender"]:checked');
+                if (genderInputs.length > 0) {
+                    value = [...genderInputs].map(input => input.value).join(', ');
+                }
+            } else {
+                value = document.getElementById(field.toLowerCase().replace(' ', '-')).value;
+            }
+            results.push(`${field}: ${value}`);
+        }
+
+        const popup = document.getElementById('popup');
+        const popupResults = document.getElementById('popup-results');
+        popupResults.innerHTML = results.join('<br>');
+        popup.style.display = 'block';
+        form.reset();
+    } else {
+        alert('Please fill in all the required fields.');
+    }
+}
+
+function resetForm() {
+    const form = document.getElementById('survey-form');
+    form.reset();
+}
+
+function closePopup() {
+    const popup = document.getElementById('popup');
+    popup.style.display = 'none';
+}
+
+window.onclick = function(event) {
+    const popup = document.getElementById('popup');
+    if (event.target == popup) {
+        closePopup();
+    }
+}
